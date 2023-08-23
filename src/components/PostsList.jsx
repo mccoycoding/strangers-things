@@ -32,15 +32,15 @@ export default function PostsList() {
         ) :  (
             <div className="container my-4">
                 {posts.map((post) => (
-                    <div className="card shadow" key={post.id}>
+                    <div className="card shadow" key={post._id}>
                         <div className="card-body">
                             <h5 className="card-title">{post.title}</h5>
                             <p className="card-text">{post.description}</p>
                             <p className="card=text">{post.location}</p>
                             <p className="card=text">{post.willDeliver ? "Delivery Available" : "Pickup Available"}</p>
-                            <p>Price: {post.price}</p>
-                            <p>Seller: {post.author.username}</p>
-                            <button className="btn btn-primary" onClick={() => handleClick(post.id)}>More details</button>
+                            <p className="card=text">Price: {post.price}</p>
+                            <p className="card=text">Seller: {post.author.username}</p>
+                            <button className="btn btn-primary" onClick={() => handleClick(post._id)}>More details</button>
                         </div>
                     </div>
                 ))}

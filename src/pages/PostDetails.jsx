@@ -1,6 +1,7 @@
+import PostDetailsView from "../components/PostDetailView";
 
 
 export default function PostDetails() {
 
-    return <p>Post Details</p>
+    return <PostDetailsView />
 }

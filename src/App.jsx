@@ -12,14 +12,13 @@ import { useState } from "react"
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
-  const [userToken, setUserToken] = useState(sessionStorage.getItem('userToken'))
 
   return (
     <div>
-      <Navbar darkMode={darkMode} setDarkMode={setDarkMode} userToken={userToken} setUserToken={setUserToken} />
+      <Navbar darkMode={darkMode} setDarkMode={setDarkMode}/>
       <Routes>
-        <Route path="/" element={ <Login userToken={userToken} setUserToken={setUserToken}/>}/>
-        <Route path="/register" element={<Register userToken={userToken} setUserToken={setUserToken}/>}/>
+        <Route path="/" element={ <Login/>}/>
+        <Route path="/register" element={<Register/>}/>
         <Route path="/posts" element={<Posts />}/>
         <Route path="/profile" element={<Profile />}/>
         <Route path="/create-post" element={<NewPost />}/>

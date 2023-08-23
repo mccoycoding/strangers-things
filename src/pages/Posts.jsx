@@ -1,6 +1,9 @@
+import PostsList from "../components/PostsList";
 
 
 export default function Posts() {
 
-    return <p>Posts</p>
+    return (
+        <PostsList/>
+    )
 }

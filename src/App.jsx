@@ -4,7 +4,6 @@ import Register from "./pages/Register"
 import Login from "./pages/Login"
 import Posts from "./pages/Posts"
 import Profile from "./pages/Profile"
-import NewPost from "./pages/NewPost"
 import PostDetails from "./pages/PostDetails"
 import Navbar from "./components/Navbar"
 import { useState } from "react"
@@ -22,8 +21,7 @@ function App() {
         <Route path="/register" element={<Register setUserToken={setUserToken}/>}/>
         <Route path="/posts" element={<Posts />}/>
         <Route path="/profile" element={<Profile />}/>
-        <Route path="/create-post" element={<NewPost />}/>
-        <Route path="/post-details/:postId" element={<PostDetails />} />
+        <Route path="/posts/:postId" element={<PostDetails />} />
       </Routes>
     </div>
   )

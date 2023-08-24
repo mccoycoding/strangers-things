@@ -25,9 +25,34 @@ export async function fetchUser(token) {
                 'Authorization': `Bearer ${token}`
             }
         });
-        const result = await response.json()
+        const result = await response.json();
         return result
     } catch (error) {
         console.error(`Error fetching user: ${error}`)
+    }
+}
+
+export async function postPost(token, title, description, price, location, willDeliver) {
+    try {
+        const response = await fetch(POSTS, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                post: {
+                    title: title,
+                    description: description,
+                    price: price,
+                    location: location,
+                    willDeliver: willDeliver
+                }
+            })
+        });
+        const result = await response.json();
+        return result
+    } catch (error) {
+        console.error(`Error making post: ${error}`)
     }
 }

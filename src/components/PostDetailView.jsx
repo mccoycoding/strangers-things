@@ -29,14 +29,33 @@ export default function PostDetailsView() {
     }, [postId])
 
     return (
-        <div className="container mt-5 border shadow rounded">
+        <div className="container-fluid mt-5 py-3 px-4 border shadow rounded">
             <h3>{post.title}</h3>
             <h5>Seller: {post.author?.username}</h5>
             <p>{post.description}</p>
             <p>{post.location}</p>
             <p>{post.willDeliver ? "Delivery Available" : "Pickup Available"}</p>
             <p>Price: {post.price}</p>
-            
+            {post.isAuthor ? (
+                <>
+                    <button className="btn btn-danger me-2">DELETE</button>
+                    <button className="btn btn-primary">EDIT</button>
+                </>
+              ) :  null}
+            {post.messages > 0 ? (
+              <div className="card mt-3">
+                <div className="card-body">
+                  <h5 className="card-title">Messages</h5>
+                  <ul className="list-group">
+                      {post.messages.map(message => (
+                          <li key={message._id} className="list-group-item">
+                              <strong>{message.fromUser.username}</strong>: {message.content}
+                          </li>
+                      ))}
+                  </ul>
+                </div>
+              </div>
+            ) : null}
         </div>
     )
 }

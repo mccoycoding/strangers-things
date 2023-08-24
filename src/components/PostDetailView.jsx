@@ -9,7 +9,7 @@ export default function PostDetailsView() {
     useEffect(() => {
         async function fetchPostDetails() {
             try {
-              const token = sessionStorage.getItem("token");
+              const token = sessionStorage.getItem("userToken");
               const fetchedPosts = await fetchPosts(token); // Fetch posts with messages
               const foundPost = fetchedPosts.data.posts.find(
                 (post) => post._id === postId

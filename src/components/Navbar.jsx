@@ -5,6 +5,10 @@ export default function Navbar( { darkMode, setDarkMode, userToken, setUserToken
     
     //Update NavBar once token is present
 
+    useEffect(() => {
+        const updatedToken = sessionStorage.getItem('userToken');
+        setUserToken(updatedToken)
+    }, [userToken])
 
     //Toggle Darkmode on and off
     const toggleDarkMode = () => {
@@ -15,6 +19,11 @@ export default function Navbar( { darkMode, setDarkMode, userToken, setUserToken
         } else if (darkMode === false) {
             html.setAttribute("data-bs-theme", "light")
         }
+    }
+
+    const handleLogout = () => {
+        sessionStorage.removeItem('userToken');
+        setUserToken(null);
     }
 
     return (
@@ -37,10 +46,10 @@ export default function Navbar( { darkMode, setDarkMode, userToken, setUserToken
                         {userToken ? (
                             <>
                                 <li className="nav-item">
-                                    <Link className="nav-link">Profile</Link>
+                                    <Link className="nav-link" to="/profile">Profile</Link>
                                 </li>
                                 <li  className="nav-item">
-                                    <Link className="nav-link" to="/" onClick={() => sessionStorage.removeItem('userToken')}>Logout</Link>
+                                    <Link className="nav-link" to="/" onClick={() => handleLogout()}>Logout</Link>
                                 </li>
                             </>
                         ) : null}

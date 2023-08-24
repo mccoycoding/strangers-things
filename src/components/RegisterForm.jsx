@@ -1,7 +1,7 @@
 import { USERS } from "../logic/info"
 import { useState } from "react";
 
-export default function RegisterForm() {
+export default function RegisterForm({setUserToken}) {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
@@ -23,6 +23,7 @@ export default function RegisterForm() {
             const result = await response.json();
             const token = result.data.token
             sessionStorage.setItem('userToken', token)
+            setUserToken(token)
             console.log(result.data.message)
         } catch (error) {
             throw error

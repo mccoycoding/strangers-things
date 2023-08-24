@@ -2,9 +2,10 @@ import { USERS } from "../logic/info"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function LoginForm() {
+export default function LoginForm({ setUserToken }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [token, setToken] = useState(null)
 
     const navigate = useNavigate()
     
@@ -25,14 +26,24 @@ export default function LoginForm() {
                 })
             });
             const result = await response.json();
-            const token = result.data.token;
-            sessionStorage.setItem('userToken', token)
+            console.log(result)
+            const fetchedToken = result.data.token;
+            sessionStorage.setItem('userToken', fetchedToken)
+            setToken(sessionStorage.getItem('userToken'))
             console.log(result.data.message)
         } catch (error) {
             throw error
         }
         //After logging in, save token to sessionStorage
         
+    }
+
+    const handleClick = async () => {
+        loginUser(username, password);
+        setTimeout(() => {
+            navigate('/profile')
+            setUserToken(token)
+        }, 2000)
     }
 
 
@@ -46,7 +57,7 @@ export default function LoginForm() {
                 <input className="form-control" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 <label className="form-label">Password</label>
             </div>
-            <button className="btn btn-primary btn-lg" type="submit" onClick={() => loginUser(username, password)}>Log in</button>
+            <button className="btn btn-primary btn-lg" type="submit" onClick={() => handleClick()}>Log in</button>
         </form>
     )
 }

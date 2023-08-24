@@ -1,63 +1,62 @@
-import { USERS } from "../logic/info"
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {useState, useContext} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {loginUser} from '../context/AuthContext/AuthActions';
+import AuthContext from '../context/AuthContext/AuthContext';
 
-export default function LoginForm({ setUserToken }) {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [token, setToken] = useState(null)
+export default function LoginForm({setUserToken}) {
+  const {user, isError, message, isLoading, dispatch} = useContext(AuthContext);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [token, setToken] = useState(null);
 
-    const navigate = useNavigate()
-    
-    const loginUser = async (username, password) => {
-        
-        //Fetch Request for logging in
-        try {
-            const response = await fetch(`${USERS}/login`, {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    user: {
-                        username: username,
-                        password: password
-                    }
-                })
-            });
-            const result = await response.json();
-            console.log(result)
-            const fetchedToken = result.data.token;
-            sessionStorage.setItem('userToken', fetchedToken)
-            setToken(sessionStorage.getItem('userToken'))
-            console.log(result.data.message)
-        } catch (error) {
-            throw error
-        }
-        //After logging in, save token to sessionStorage
-        
+  const navigate = useNavigate();
+
+  const handleClick = async () => {
+    dispatch({type: 'SET_LOADING'});
+    const result = await loginUser(username, password);
+    console.log(result);
+
+    if (result.error) {
+      return dispatch({type: 'USER_AUTH_ERROR', payload: result.error});
     }
 
-    const handleClick = async () => {
-        loginUser(username, password);
-        setTimeout(() => {
-            navigate('/profile')
-            setUserToken(token)
-        }, 2000)
-    }
+    dispatch({type: 'USER_LOGIN', payload: result});
+    navigate('/profile');
+  };
 
-
-    return (
-        <form className="mx-5" onSubmit={(e) => e.preventDefault()}>
-            <div className="form-floating mb-3 mx-5">
-                <input className="form-control" type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
-                <label className="form-label">Username</label>
-            </div>
-            <div className="form-floating mb-3 mx-5">
-                <input className="form-control" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                <label className="form-label">Password</label>
-            </div>
-            <button className="btn btn-primary btn-lg" type="submit" onClick={() => handleClick()}>Log in</button>
-        </form>
-    )
+  return (
+    <>
+      <form
+        className='mx-5'
+        onSubmit={(e) => e.preventDefault()}
+      >
+        <div className='form-floating mb-3 mx-5'>
+          <input
+            className='form-control'
+            type='text'
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <label className='form-label'>Username</label>
+        </div>
+        <div className='form-floating mb-3 mx-5'>
+          <input
+            className='form-control'
+            type='password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <label className='form-label'>Password</label>
+        </div>
+        <button
+          className='btn btn-primary btn-lg'
+          type='submit'
+          onClick={() => handleClick()}
+        >
+          Log in
+        </button>
+      </form>
+      {isError && <p>{message}</p>}
+    </>
+  );
 }
